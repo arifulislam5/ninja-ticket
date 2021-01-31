@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flight Booking</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Roboto:wght@400;500;700&display=swap"
+        rel="stylesheet">
+
+    <!-- bootstrap -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <!--Header and Menu Section-->
+    <div >
+        <header class="content" class="container">
+            <nav>
+                <ul>
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Contact</a></li>
+                    <li><a class="active" href="#">Sign Up</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <!--Booking Section-->
+        <main id="mainBody" class="main-content container content">
+            <div class="booking-form">
+                <h3>Booking Flights</h3>
+                <div class="input-group">
+                    <label for="">Flying From</label>
+                    <input id="fromflyingPlace" class="inp-style flight-deatails" type="text"
+                        placeholder="Dhake, Bangladesh">
+                </div>
+                <div class="input-group">
+                    <label for="">Flying To</label>
+                    <input id="toflyingPlace" class="inp-style flight-deatails" type="text"
+                        placeholder="New York, United States">
+                </div>
+                <div class="inputs">
+                    <div class="input-group">
+                        <label" for="">Departure</label>
+                            <input id="departureDate" class="inp-style flight-deatails" type="date">
+                    </div>
+                    <div class="input-group">
+                        <label for="">Return</label>
+                        <input id="returnDate" class="inp-style flight-deatails" type="date">
+                    </div>
+                </div>
+                <div class="input-group f-class">
+                    <div class="ticket-box">
+                        <label for="">First Class ($150)</label>
+
+                        <input id="first-class-input" class="inp-style inp-width" type="number" value="0">
+                    </div>
+                    <div class="plus-minus-btn">
+                        <button onclick="CountUpgradeSeat('first-class-input', true)"
+                            class="btn btn-default border"><span>+</span></button>
+                        <button onclick="CountUpgradeSeat('first-class-input', false)"
+                            class="btn btn-default border"><span>-</span></button>
+                    </div>
+                </div>
+
+                <div class="input-group f-class">
+                    <div class="ticket-box">
+                        <label for="">Economy ($100)</label>
+                        <input id="economy-class-input" class="inp-style inp-width" type="number" value="0">
+                    </div>
+                    <div class="plus-minus-btn">
+                        <button onclick='CountUpgradeSeat("economy-class-input",true)'
+                            class="btn btn-default border"><span>+</span></button>
+                        <button onclick='CountUpgradeSeat("economy-class-input",false)'
+                            class="btn btn-default border"><span>-</span></button>
+                    </div>
+                </div>
+                <div class="calculations">
+                    <div class="amount">
+                        <div class="left">
+                            <p>Subtotal</p>
+                        </div>
+                        <div class="right">
+                            <p>$<span id="bill-before-tax">000</span></p>
+                        </div>
+                    </div>
+
+                    <div class="amount">
+                        <div class="left">
+                            <p>Charge 10% VAT</p>
+                        </div>
+                        <div class="right">
+                            <p>$<span id="tax">00</span></p>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="amount">
+                        <div class="left">
+                            <h4>Total</h4>
+                        </div>
+                        <div class="right">
+                            <p>$<span id="total">000</span></p>
+                        </div>
+                    </div>
+                </div>
+                <button onclick="WelcomeMessage()" class="btn-style">Book Now</button>
+            </div>
+
+            <div class="booking-content">
+                <h1>discover <br> around the world</h1>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicingelit. Provident voluptatibus quam fuga laborumalias
+                    veniam libero autem quasi maxime ullam vero nama imi dolor, architecto ab facilis eaque deserunt
+                    nobise voluptatibus quam</p>
+            </div>
+        </main>
+    </div>
+    <div id="havingbooked">
+        <div class="container confirmation-content">
+            <h1 class="welcome"> welcome successfull payment</h1><br><br>
+
+            
+                <h3 id="ministatement">MINI STATEMENT</h3><br><br>
+                <div class="ministatementBody">
+                    <h5> Total First Class Ticket  : <span id="first-class-after-confirm"></span></h5>
+                <h5>First Class Ticket Bill : $ <span id="first-class-bill-after-confirm"></span></h5>
+                
+                <h5> Total Economy Class Ticket : <span id="economy-class-after-confirm"></span></h5>
+                <h5>Economy Class Ticket Bill : $ <span id="economy-class-bill-after-confirm"></span></h5>
+                
+                <h5>Subtotal : $ <span id="subtotal-after-confirm"></span></h5>
+                <h5>VAT : $ <span id="tax-after-confirm"></span></h5>
+                
+                <h2 class="text-info"> Total Bill  : $ <span id="total-after-confirm"></span></h2>
+
+                </div>
+                
+            
+        </div>
+
+    </div>
+
+
+
+    <script>
+
+
+//getting incremented seat
+
+                function CountUpgradeSeat(seatInputId, increment){
+
+                                var seatNumber = totalSeatCount(seatInputId);
+                                if (increment == true){
+                                    seatNumber = seatNumber + 1;
+                                }
+                                if (increment == false && seatNumber > 0){
+                                    seatNumber = seatNumber - 1;
+                                }
+                                document.getElementById(seatInputId).value = seatNumber;
+                                totalBill();
+                }
+
+// total bill 
+
+                function totalBill(){
+
+                                //getting value from input
+                                const firstClassSeatBeforeConfirm = totalSeatCount("first-class-input");
+                                const economyClassSeatBeforeConfirm = totalSeatCount("economy-class-input");
+                                //subtotal is summation of firstclass and economy class
+                                const subTotal=(firstClassSeatBeforeConfirm*150) + (economyClassSeatBeforeConfirm * 100); 
+                                document.getElementById("bill-before-tax").innerText=subTotal;
+                                //tax is 10%
+                                const taxBill=subTotal/10;
+                                document.getElementById("tax").innerText=taxBill;
+
+                                const total = subTotal + taxBill;
+                                document.getElementById("total").innerText=total;
+
+                }
+
+// welcome message after confirm
+
+                function WelcomeMessage(){
+
+                                document.getElementById('mainBody').style.display = 'none';//mainbody will not show
+
+                                document.getElementById('havingbooked').style.display = 'block';//welcome message will  seen
+
+                                //getting all value from input value ,tex,total,subtotal
+                                const firstClassSeatAfterConfirm = totalSeatCount("first-class-input");
+                                document.getElementById("first-class-after-confirm").innerText = firstClassSeatAfterConfirm;
+
+                                const economyClassSeatAfterConfirm = totalSeatCount("economy-class-input");
+                                document.getElementById("economy-class-after-confirm").innerText = economyClassSeatAfterConfirm;
+
+                                const subtotalFirstClassSeatAfterConfirm = (firstClassSeatAfterConfirm * 150) ;
+                                document.getElementById("first-class-bill-after-confirm").innerText = subtotalFirstClassSeatAfterConfirm;
+
+                                const subtotalEconomyClassSeatAfterConfirm = (economyClassSeatAfterConfirm * 100);
+                                document.getElementById("economy-class-bill-after-confirm").innerText = subtotalEconomyClassSeatAfterConfirm;
+
+                                const subTotal = (firstClassSeatAfterConfirm * 150) + (economyClassSeatAfterConfirm * 100);
+                                document.getElementById("subtotal-after-confirm").innerText = subTotal;
+
+                                const taxBill = subTotal/10;
+                                document.getElementById("tax-after-confirm").innerText = taxBill;
+
+                                const total = subTotal + taxBill;
+                                document.getElementById("total-after-confirm").innerText = total;
+                }
+//counting total seat
+                    function totalSeatCount(countSeat){
+
+                                const seat = document.getElementById(countSeat);
+                                const seatNumber = parseInt(seat.value);
+                                return seatNumber;
+                    }
+                
+    </script>
+
+</body>
+
+</html>
